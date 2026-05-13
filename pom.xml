@@ -1,0 +1,215 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>2026_DSAlgo</groupId>
+  <artifactId>2026_DSAlgo</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <!--<name>DSAlgo_NaveenWay</name>
+  <url>http://www.example.com</url>
+  -->
+  <properties>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Dependency Versions -->
+    <selenium.version>4.20.0</selenium.version>
+    <cucumber.version>7.18.0</cucumber.version>
+    <junit.version>4.13.2</junit.version>
+    <webdrivermanager.version>5.8.0</webdrivermanager.version>
+    <log4j.version>2.23.1</log4j.version>
+    <extent.version>5.1.1</extent.version>
+    <jackson.version>2.17.1</jackson.version>
+  </properties>
+
+  <build>
+    <plugins>
+
+      <!-- Maven Compiler Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <configuration>
+          <source>21</source>
+          <target>21</target>
+        </configuration>
+      </plugin>
+
+      <!-- Maven Surefire Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.2</version> <!-- ✅ FIXED: 3.x defaults to JUnit 5; 2.22.2 works cleanly with JUnit 4 -->
+        <configuration>
+
+          <!-- Point to your Cucumber TestRunner class -->
+          <includes>
+            <include>**/MyTestRunner.java</include> <!-- ✅ FIXED: was TestRunner.java, your class is MyTestRunner -->
+          </includes>
+
+          <!-- Pass runtime properties: mvn test -Dbrowser=chrome -Denv=staging -->
+          <systemPropertyVariables>
+            <browser>${browser}</browser>
+            <env>${env}</env>
+            <baseUrl>${baseUrl}</baseUrl>
+          </systemPropertyVariables>
+
+          <!-- Run specific tags: mvn test -Dcucumber.filter.tags="@Smoke" -->
+          <systemProperties>
+            <property>
+              <name>cucumber.filter.tags</name>
+              <value>${cucumber.filter.tags}</value>
+            </property>
+          </systemProperties>
+
+          <!-- Cleaner console output -->
+          <useFile>false</useFile>
+
+          <!-- Fail build only after all tests complete -->
+          <testFailureIgnore>false</testFailureIgnore>
+
+          <!-- Rerun flaky tests up to 2 times before marking failed -->
+          <rerunFailingTestsCount>2</rerunFailingTestsCount>
+
+          <!-- Reports output directory -->
+          <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+
+        </configuration>
+      </plugin>
+
+      <!-- Cucumber Reporting Plugin -->
+      <plugin>
+        <groupId>net.masterthought</groupId>
+        <artifactId>maven-cucumber-reporting</artifactId>
+        <version>5.8.0</version>
+        <executions>
+          <execution>
+            <id>execution</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <projectName>DsAlgo Apr2026</projectName>
+              <outputDirectory>${project.build.directory}/cucumber-reports</outputDirectory>
+              <inputDirectory>${project.build.directory}</inputDirectory>
+              <jsonFiles>
+                <param>**/*.json</param>
+              </jsonFiles>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <dependencies>
+
+    <!-- ===== SELENIUM ===== -->
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+
+    <!-- ===== CUCUMBER ===== -->
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber.version}</version>
+    </dependency>
+
+    <!-- ✅ REMOVED: cucumber-junit-platform-engine (JUnit 5) — was conflicting with @RunWith (JUnit 4) -->
+
+    <!-- Cucumber + JUnit 4 integration -->
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Cucumber PicoContainer - dependency injection in step defs -->
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-picocontainer</artifactId>
+      <version>${cucumber.version}</version>
+    </dependency>
+
+    <!-- ===== JUNIT 4 ===== -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- ===== REPORTING ===== -->
+    <!-- ExtentReports - HTML reports -->
+    <dependency>
+      <groupId>com.aventstack</groupId>
+      <artifactId>extentreports</artifactId>
+      <version>${extent.version}</version>
+    </dependency>
+
+    <!-- Extent Cucumber7 Adapter -->
+    <dependency>
+      <groupId>tech.grasshopper</groupId>
+      <artifactId>extentreports-cucumber7-adapter</artifactId>
+      <version>1.14.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- ===== LOGGING ===== -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+
+    <!-- SLF4J bridge -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>2.0.13</version>
+    </dependency>
+
+    <!-- ===== UTILITIES ===== -->
+    <!-- Apache Commons IO - file handling -->
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.16.1</version>
+    </dependency>
+
+    <!-- Jackson - JSON/YAML config reading -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <!-- Apache POI - Excel data-driven testing -->
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>5.2.5</version>
+    </dependency>
+
+    <!-- Faker - generate random test data -->
+    <dependency>
+      <groupId>net.datafaker</groupId>
+      <artifactId>datafaker</artifactId>
+      <version>2.2.2</version>
+    </dependency>
+
+  </dependencies>
+</project>
