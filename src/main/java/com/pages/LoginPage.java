@@ -202,4 +202,30 @@ public class LoginPage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage));
         return driver.findElement(errorMessage).getText().trim();
     }
+    
+    public DataStructPage doLogin_ds(String uName, String passwd)
+    {
+    	 driver.findElement(usernameField).sendKeys(uName);
+    	 driver.findElement(passwordField).sendKeys(passwd);
+    	 driver.findElement(submitButton).click();
+    	 return new DataStructPage(driver);
+    }
+    
+    
+    public ArrayPage doLogin_array(String uName, String passwd)
+    {
+    	 driver.findElement(usernameField).sendKeys(uName);
+    	 driver.findElement(passwordField).sendKeys(passwd);
+    	 driver.findElement(submitButton).click();
+    	 return new ArrayPage(driver);
+    }
+    
+    public LinkedListPage doLogin_linkedlist(String uName, String passwd)
+    {
+    	 driver.findElement(usernameField).sendKeys(uName);
+    	 driver.findElement(passwordField).sendKeys(passwd);
+    	 driver.findElement(submitButton).click();
+    	 return new LinkedListPage(driver);
+    }
+    
 }

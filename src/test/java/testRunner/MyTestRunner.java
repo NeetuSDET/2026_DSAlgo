@@ -9,7 +9,7 @@ import io.cucumber.junit.CucumberOptions;
 @RunWith(Cucumber.class)
 
 @CucumberOptions(
-        features = {"src/test/resources/com/features"},
+        features = {"src/test/resources/com/features/LinkedListPage.feature"},
         glue = {"stepDefinitions", "AppHooks"},
         plugin = {
                 "pretty",
