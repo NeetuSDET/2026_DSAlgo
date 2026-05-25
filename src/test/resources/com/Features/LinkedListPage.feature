@@ -13,6 +13,6 @@ Feature: NumpyNinja Linked List Page Feature
   
     Scenario: Verify the Linked List page loads successfully
       When the user clicks on the Linked List page get started button
-      Then the "Linked List" page URL should contain "/linked-list/"
+      Then the Linked List page URL should contain "/linked-list/"
   
-  //sss
+ 

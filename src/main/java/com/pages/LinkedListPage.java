@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 public class LinkedListPage {
 	
 	private WebDriver driver;
-	private By getStartedBtn = By.xpath("//a[contains(@href, 'linked-list')]");
+	private By getStartedBtn = By.xpath("(//a[contains(@href,'linked-list')])[2]");
 	
 	public LinkedListPage(WebDriver driver) {
 		this.driver = driver;

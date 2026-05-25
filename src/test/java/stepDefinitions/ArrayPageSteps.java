@@ -3,6 +3,8 @@ package stepDefinitions;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Assert;
+
 import com.factory.DriverFactory;
 import com.pages.ArrayPage;
 import com.pages.LoginPage;
@@ -30,8 +32,16 @@ public class ArrayPageSteps {
 	public void the_user_clicks_on_the_array_page_get_started_button() {
 		ap.clickGetStartedBtn();
 		System.out.println("Clicked Array dropdown toggle");
+	}
+	@Then("the array page URL should contain {string}")
+	public void the_array_page_url_should_contain(String expTitle) {
+		String actTitle = ap.getCurrentUrl();
+		System.out.println("The expected title: " + expTitle);
+		System.out.println("The actual title is: " + actTitle);
+		Assert.assertTrue(actTitle.contains(expTitle));
 
 	}
+
 
 	
 }

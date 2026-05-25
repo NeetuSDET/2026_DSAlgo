@@ -13,4 +13,4 @@ Feature: NumpyNinja Array Page Feature
   
     Scenario: Verify the Array page loads successfully
       When the user clicks on the Array page get started button
-      Then the "Array" page URL should contain "/array/"
+      Then the array page URL should contain "/array/"

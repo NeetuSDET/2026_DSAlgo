@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class ArrayPage {
 
 	private WebDriver driver;
-	private By getStartedBtn = By.xpath("//a[contains(@href,'array')]");
+	private By getStartedBtn = By.xpath("(//a[contains(@href,'array')])[2]");
 	
 	public ArrayPage(WebDriver driver) {
 		this.driver = driver;
