@@ -34,8 +34,8 @@ public class DataStructPageSteps {
 		System.out.println("Clicked Data Structures dropdown toggle");
 	}
 
-	@Then("the {string} page URL should contain {string}")
-	public void the_page_url_should_contain(String page, String expTitle) {
+	@Then("the Data Structure page URL should contain {string}")
+	public void the_Data_Structure_page_URL_should_contain(String expTitle) {
 		String actTitle = dsp.getCurrentUrl();
 		System.out.println("The expected title: " + expTitle);
 		System.out.println("The actual title is: " + actTitle);

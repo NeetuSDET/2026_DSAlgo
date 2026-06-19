@@ -16,11 +16,11 @@ public class RegisterPage {
     // ─── By Locators ──────────────────────────────────────────────
 
     // Navbar
-    private By brandLogo       = By.xpath("//a[@class='navbar-brand' and text()='NumpyNinja']");
-    private By registerNavLink = By.linkText("Register");
-    private By signInNavLink   = By.linkText("Sign in");
+    private By brandLogo    = By.xpath("//a[@class='navbar-brand' and text()='NumpyNinja']");
+    private By registerLink = By.linkText("Register");
+    private By signInLink   = By.linkText("Sign in");
 
- // Form fields — Django renders: id_username, id_password1, id_password2
+    // Form fields — Django renders: id_username, id_password1, id_password2
     private By usernameField        = By.id("id_username");
     private By passwordField        = By.id("id_password1");
     private By passwordConfirmField = By.id("id_password2");
@@ -82,15 +82,15 @@ public class RegisterPage {
     // ─── Navbar — Register & Sign In ─────────────────────────────
 
     public boolean isRegisterLinkVisible() {
-        return driver.findElement(registerNavLink).isDisplayed();
+        return driver.findElement(registerLink).isDisplayed();
     }
 
     public boolean isSignInLinkVisible() {
-        return driver.findElement(signInNavLink).isDisplayed();
+        return driver.findElement(signInLink).isDisplayed();
     }
 
     public void clickSignInLink() {
-        driver.findElement(signInNavLink).click();
+        driver.findElement(signInLink).click();
     }
 
     // ─── Form Fields — Visibility ─────────────────────────────────
@@ -218,184 +218,4 @@ public class RegisterPage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(successBanner));
         return driver.findElement(successBanner).getText().trim();
     }
-    /*
-    // Page Heading
-    // BUG FIX #3: Live page renders <h3>Registration</h3>, not <h1>Register</h1>
-    private By pageHeading = By.xpath(
-        "//*[self::h1 or self::h2 or self::h3 or self::h4]" +
-        "[contains(text(),'Registration') or contains(text(),'Register')]"
-    );
-
-    // Form Fields
-    // BUG FIX #4: Django UserCreationForm only has username, password1, password2
-    // Email field does NOT exist on the live page — locator removed entirely
-    private By usernameField        = By.id("id_username");
-    private By passwordField        = By.id("id_password1");
-    private By confirmPasswordField = By.id("id_password2");
-
-    // Submit Button
-    private By submitButton = By.xpath("//input[@type='submit'] | //button[@type='submit']");
-
-    // Login link below the form
-    // Live page: <a href="/login">Login</a> outside navbar
-    private By signInFormLink = By.xpath(
-        "//a[contains(@href,'/login') and not(ancestor::nav)]"
-    );
-
-    // Error / Validation Messages
-    // BUG FIX #6: Django renders form errors as <ul class="errorlist">
-    // Previous locator targeted Bootstrap .alert-danger which is NOT used here
-    private By errorMessage = By.xpath(
-        "//ul[contains(@class,'errorlist')] | " +
-        "//*[contains(@class,'alert-danger')] | " +
-        "//*[contains(@class,'alert') and contains(@class,'error')]"
-    );
-
-    // ─── Constructor ──────────────────────────────────────────────
-
-    public RegisterPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait   = new WebDriverWait(driver, Duration.ofSeconds(10));
-    }
-
-    // ─── Navigation ───────────────────────────────────────────────
-
-    public void navigateTo(String url) { driver.get(url); }
-
-    public String getPageTitle()   { return driver.getTitle(); }
-
-    public String getCurrentUrl()  { return driver.getCurrentUrl(); }
-
-    // ─── Navbar — Brand Logo ──────────────────────────────────────
-
-    public void clickBrandLogo() {
-        wait.until(ExpectedConditions.elementToBeClickable(brandLogo));
-        driver.findElement(brandLogo).click();
-    }
-
-    public String getBrandLogoText() {
-        return driver.findElement(brandLogo).getText().trim();
-    }
-
-    public boolean isBrandLogoVisible() {
-        return driver.findElement(brandLogo).isDisplayed();
-    }
-
-    // ─── Navbar — Register & Sign In ─────────────────────────────
-
-    public boolean isRegisterNavLinkVisible() {
-        return driver.findElement(registerNavLink).isDisplayed();
-    }
-
-    public boolean isSignInNavLinkVisible() {
-        return driver.findElement(signInNavLink).isDisplayed();
-    }
-
-    public String getSignInNavLinkHref() {
-        return driver.findElement(signInNavLink).getAttribute("href");
-    }
-
-    public void clickSignInNavLink() {
-        driver.findElement(signInNavLink).click();
-    }
-
-    // ─── Page Heading ─────────────────────────────────────────────
-
-    public boolean isPageHeadingVisible() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(pageHeading));
-        return driver.findElement(pageHeading).isDisplayed();
-    }
-
-    public String getPageHeadingText() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(pageHeading));
-        return driver.findElement(pageHeading).getText().trim();
-    }
-
-    // ─── Form Fields — Visibility ─────────────────────────────────
-
-    public boolean isUsernameFieldVisible() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameField));
-        return driver.findElement(usernameField).isDisplayed();
-    }
-
-    public boolean isPasswordFieldVisible() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(passwordField));
-        return driver.findElement(passwordField).isDisplayed();
-    }
-
-    public boolean isConfirmPasswordFieldVisible() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(confirmPasswordField));
-        return driver.findElement(confirmPasswordField).isDisplayed();
-    }
-
-    // ─── Form Fields — Input ──────────────────────────────────────
-
-    public void enterUsername(String username) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameField));
-        driver.findElement(usernameField).clear();
-        driver.findElement(usernameField).sendKeys(username);
-    }
-
-    public void enterPassword(String password) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(passwordField));
-        driver.findElement(passwordField).clear();
-        driver.findElement(passwordField).sendKeys(password);
-    }
-
-    public void enterConfirmPassword(String confirmPassword) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(confirmPasswordField));
-        driver.findElement(confirmPasswordField).clear();
-        driver.findElement(confirmPasswordField).sendKeys(confirmPassword);
-    }
-
-    // ─── Submit Button ────────────────────────────────────────────
-
-    public boolean isSubmitButtonVisible() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(submitButton));
-        return driver.findElement(submitButton).isDisplayed();
-    }
-
-    public boolean isSubmitButtonClickable() {
-        wait.until(ExpectedConditions.elementToBeClickable(submitButton));
-        return driver.findElement(submitButton).isEnabled();
-    }
-
-    public String getSubmitButtonText() {
-        String val = driver.findElement(submitButton).getAttribute("value");
-        return (val != null && !val.isEmpty())
-            ? val.trim()
-            : driver.findElement(submitButton).getText().trim();
-    }
-
-    public void clickSubmitButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(submitButton));
-        driver.findElement(submitButton).click();
-    }
-
-    // ─── Login Link (below form) ──────────────────────────────────
-
-    public boolean isSignInFormLinkVisible() {
-        return driver.findElement(signInFormLink).isDisplayed();
-    }
-
-    public String getSignInFormLinkHref() {
-        return driver.findElement(signInFormLink).getAttribute("href");
-    }
-
-    public void clickSignInFormLink() {
-        driver.findElement(signInFormLink).click();
-    }
-
-    // ─── Error / Validation Message ───────────────────────────────
-
-    public boolean isErrorMessageDisplayed() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage));
-        return driver.findElement(errorMessage).isDisplayed();
-    }
-
-    public String getErrorMessageText() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage));
-        return driver.findElement(errorMessage).getText().trim();
-    }
-    */
 }
